@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+
 typedef struct {
     int dia;
     int mes;
@@ -7,38 +11,43 @@ typedef struct {
 
 typedef struct {
     char nome[50];
-    char telefone;
+    char telefone[100];
     aniversario niver;
 }Contato;
 
 
-Contato* Alocavetor(int capacidadeInicial) {
-    Contato *vetor = malloc(capacidadeInicial * sizeof(Contato));
-    if (vetor == NULL) {
-        printf("Erro ao alocar memoria inicial!\n");
-        exit(1);
+void inserircontato(Contato **agenda, int *qtd, int *capacidade){
+    if(*qtd==*capacidade){
+        int nova_cap=*capacidade*2
+        Contato **temp= realloc(*agenda, (size_t)nova_cap*sizeof(Contato));
+    if (temp==NULL){
+        printf("Erro ao Realocar Memória.");
+        return;
     }
-    return vetor;
-}
+    *agenda=temp;
+    *capacidade=nova_cap;
+    }
+    Contato novo;
 
-void inserirContato( Contato **vetorContatos, int *qtdContatos, int *capacidade){
-    if (*qtdContatos>=*capacidade){
-        *capacidade *= 2;
-    }
-    Contato *temp = realloc(*vetorContatos, (*capacidade) * syzeof(Contato))
-    if(temp==NULL){
-        printf("Erro ao realocar memoria!\n");
-        exit(1);
-    }
-    *vetirContatos = temp;
-}
-Contato novo;
-    printf("\n--- Novo Contato ---\n");
-    printf("Digite o nome: ");
+    printf("Nome: ");
     scanf(" %s", novo.nome);
-    printf("Digite o telefone: ");
+
+    printf("Telefone: ");
     scanf(" %s", novo.telefone);
-    printf("Digite o dia do aniversario: ");
-    scanf("%d", &novo.niver.dia);
-    printf("Digite o mes do aniversario: ");
-    scanf("%d", &novo.niver.mes);
+
+    printf("Aniversário, Dia e Mês: ");
+    scanf("%d %d", &novo.niver.dia, &novo.niver.mes);
+
+    int pos=0;
+    while(pos<*qtd && strcmp((*agenda)[pos].nome, novo.nome)<0){
+        pos++;
+    }
+
+    for(int i=*qtd; i>pos; i--){
+        *agenda[i]=*agenda[i-1];
+    }
+
+    (*agenda)[pos]=novo;
+    (*qtd)++;
+    printf("Contato Inserido.");
+}
