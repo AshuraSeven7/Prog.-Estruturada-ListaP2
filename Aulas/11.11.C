@@ -51,3 +51,35 @@ void inserircontato(Contato **agenda, int *qtd, int *capacidade){
     (*qtd)++;
     printf("Contato Inserido.");
 }
+
+void removercontato(Contato *agenda, int *qtd){
+    if(*qtd==0){
+        printf("Agenda Vazia.\n");
+        return;
+    }
+
+    char alvo[50];
+    printf("Digite o Nome do usuário a ser excluído: ");
+    scanf(" %s", alvo);
+
+    int idx = -1;
+
+    for (i=0; i<*qtd; i++){
+        if(strcmp(agenda[i].nome, alvo) == 0){
+        idx = i;
+        break;
+        }
+    }
+
+    if(idx == -1){
+        printf("Usuário não encontrado.\n");
+        return;
+    }
+
+    for(i=idx; i<*qtd-1; i++){
+        agenda[i] = agenda[i+1];
+    }
+
+    (*qtd)--;
+    printf("Usuário removido.\n");
+}
